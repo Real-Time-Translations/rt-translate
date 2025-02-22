@@ -1,0 +1,26 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: .docker/frontend/Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    env_file:
+      - ./frontend/.env
+    environment:
+      NODE_ENV: "development"
+    ports:
+      - "5173:5173"
+
+  backend:
+    build:
+      context: .
+      dockerfile: .docker/backend/Dockerfile
+    container_name: fastapi-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    working_dir: /app
