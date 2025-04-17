@@ -1,10 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
-# test something
-app = FastAPI(title="Real-Time Translation API")
+app = FastAPI()
 
-#test git working 3
-@app.get("/")
-async def root():
-    return {"message": "API is running"}
-
+@app.websocket("/ws")
+async def pcm_stream(ws: WebSocket):
+    await ws.accept()
+    f = open('./output.raw', 'wb')
+    try:
+        while True:
+            data = await ws.receive_bytes()
+            print(f"Received audio chunk ({len(data)} bytes)", flush=True)
+            f.write(data)
+            await ws.send_bytes(data)
+    except WebSocketDisconnect:
+        print("client disconnected")
