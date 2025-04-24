@@ -1,18 +1,18 @@
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: .docker/frontend/Dockerfile
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    working_dir: /app
-    env_file:
-      - ./frontend/.env
-    environment:
-      NODE_ENV: "development"
-    ports:
-      - "5173:5173"
+#  frontend:
+#    build:
+#      context: .
+#      dockerfile: .docker/frontend/Dockerfile
+#    volumes:
+#      - ./frontend:/app
+#      - /app/node_modules
+#    working_dir: /app
+#    env_file:
+#      - ./frontend/.env
+#    environment:
+#      NODE_ENV: "development"
+#    ports:
+#      - "5173:5173"
 
   backend:
     build:
