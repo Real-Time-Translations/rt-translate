@@ -21,7 +21,7 @@ def save_wav_from_raw():
 @app.websocket("/ws")
 async def pcm_stream(ws: WebSocket):
     await ws.accept()
-    f = open('./app/output.raw', 'wb')
+    f = open('output.raw', 'wb')
     try:
         while True:
             data = await ws.receive_bytes()
