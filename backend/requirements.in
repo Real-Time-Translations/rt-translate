@@ -2,3 +2,5 @@ fastapi[standard]
 uvicorn
 numpy
 pydantic
+scipy
+vosk
