@@ -3,10 +3,8 @@
 		<button @click="startStreaming">Start PCM Streaming</button>
 		<button @click="stopStreaming">Stop Streaming</button>
 
-		<!-- final transcript -->
 		<pre style="white-space: pre-wrap">{{ transcript }}</pre>
 
-		<!-- live (partial) hypothesis -->
 		<p v-if="partial">{{ partial }}</p>
 	</div>
 </template>
@@ -15,14 +13,14 @@
 import { ref } from 'vue'
 
 const socket    = ref(null)
-const transcript = ref('')   // accumulated final text
-const partial    = ref('')   // current interim text
+const transcript = ref('')
+const partial    = ref('')
 
 let audioCtx, processor, stream
 
 async function startStreaming () {
 	stream     = await navigator.mediaDevices.getUserMedia({ audio: true })
-	audioCtx   = new AudioContext()
+    audioCtx   = new AudioContext({ sampleRate: 16000 })
 	await audioCtx.resume()
 
 	const input     = audioCtx.createMediaStreamSource(stream)
@@ -33,12 +31,13 @@ async function startStreaming () {
 
 	socket.value.onopen = () => console.log('ws open')
 
-    socket.onmessage = ({ data }) => {
+    socket.value.onmessage = ({ data }) => {
+        console.log(data);
         const msg = JSON.parse(data);
-        if (msg.type === "partial")   liveLine.value = msg.text;
+        if (msg.type === "partial")   partial.value = msg.text;
         if (msg.type === "final") {
-            liveLine.value  = "";
-            transcript.value = msg.transcript;   // full text so far
+            partial.value  = "";
+            transcript.value = msg.transcript;
         }
     };
 
