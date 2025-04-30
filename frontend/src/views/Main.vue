@@ -5,6 +5,8 @@
 
 		<pre style="white-space: pre-wrap">{{ transcript }}</pre>
 
+		<pre style="white-space: pre-wrap; margim-top: 20px;">{{ translation }}</pre>
+
 		<p v-if="partial">{{ partial }}</p>
 	</div>
 </template>
@@ -13,7 +15,8 @@
 import { ref } from 'vue'
 
 const socket    = ref(null)
-const transcript = ref('')
+const transcript = ref('Transcrip')
+const translation = ref('Translation')
 const partial    = ref('')
 
 let audioCtx, processor, stream
@@ -37,7 +40,8 @@ async function startStreaming () {
         if (msg.type === "partial")   partial.value = msg.text;
         if (msg.type === "final") {
             partial.value  = "";
-            transcript.value = msg.transcript;
+            transcript.value = msg.transcript
+            translation.value = msg.translation_all
         }
     };
 

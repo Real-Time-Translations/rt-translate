@@ -4,3 +4,4 @@ numpy
 pydantic
 scipy
 vosk
+faster_whisper
